@@ -5,6 +5,12 @@ using namespace std;
 #define endl '\n'
 const int MOD = 1e9 + 7;
 
+/* Ý tưởng:
+    In ra tất cả các nút lá của Cây tìm kiếm nhị phân (BST):
+    - Đệ quy duyệt cây, nếu gặp nút lá (`left == NULL && right == NULL`) thì in giá trị ra.
+    - Tiếp tục duyệt bên trái rồi bên phải để đảm bảo thứ tự in từ trái sang phải.
+*/
+
 struct Node{
     int data;
     Node *left, *right;
@@ -24,6 +30,7 @@ struct Node{
         }
     }
 
+    // In tất cả các nút lá
     void printLeaf(){
         if (left == NULL && right == NULL){
             cout << data << ' ';
@@ -33,8 +40,6 @@ struct Node{
         if (right) right->printLeaf();
     }
 }; typedef Node* Tree;
-
-
 
 inline void solve(){
     int n; cin >> n;

@@ -6,10 +6,16 @@ using namespace std;
 #define ll long long
 #define endl '\n'
 
+/* Ý tưởng:
+    Gợi ý từ tự động (Search Autocomplete / Suggestion system) bằng Trie:
+    - Khi chèn từ `s` kèm tần suất `cnt`: Duyệt từng ký tự, nếu `cnt` lớn hơn tần suất lớn nhất `max` đang lưu ở node hiện tại thì cập nhật `T->max = cnt` và ghi nhớ từ `T->record = s`.
+    - Khi truy vấn tiền tố `s`: Đi theo đường đi của `s` trong Trie. Nếu đi hết được `s`, kết quả chính là từ gợi ý `T->record` lưu ở nút cuối cùng của tiền tố đó. Nếu không đi hết -> in "No suggestion!".
+*/
+
 struct Node {
     Node *child[26];
-    int max = 0;
-    string record = "";
+    int max = 0;       // Tần suất lớn nhất của từ đi qua node này
+    string record = ""; // Từ có tần suất lớn nhất tương ứng
 
     Node () {
         max = 0;
@@ -21,6 +27,7 @@ struct Node {
 }; typedef Node* trie;
 trie root = new Node();
 
+// Chèn từ s với số lần xuất hiện/tần suất cnt vào Trie
 void insert(trie T, string &s, int cnt){
     for (char ch : s) {
         int idx = ch - 'a';
@@ -28,6 +35,7 @@ void insert(trie T, string &s, int cnt){
             T->child[idx] = new Node();
         }
         T = T->child[idx];
+        // Cập nhật từ gợi ý có tần suất cao nhất đi qua node này
         if (cnt > T->max) {
             T->max = cnt;
             T->record = s;
@@ -35,6 +43,7 @@ void insert(trie T, string &s, int cnt){
     }
 }
 
+// Truy vấn từ gợi ý tương ứng với tiền tố s
 string query(trie T, string &s) {
     for (char ch : s) {
         int idx = ch - 'a';
@@ -55,19 +64,10 @@ inline void solve(){
         cout << query(root, s) << endl;
     }
 }
-// inline void get_time_n_mem(clock_t start, clock_t end){
-//     double time_taken = double(end - start) / double(CLOCKS_PER_SEC);
-//     cerr << "\n-----------------------------------\n";
-//     cerr << "Time:   " << fixed << setprecision(6) << time_taken << " sec\n";
-//     cerr << "-----------------------------------\n";
-// }
 
 signed main(){
     nguyentukien
-    // clock_t start = clock();
     int t = 1; // cin >> t;
     while (t--) solve();
-    // clock_t end = clock();
-    // get_time_n_mem(start, end);
     return 0;
 }

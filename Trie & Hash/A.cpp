@@ -6,6 +6,12 @@ using namespace std;
 #define ll long long
 #define endl '\n'
 
+/* Ý tưởng:
+    Cây Cấu trúc Dữ liệu Trie cơ bản (Prefix Tree) cho bảng chữ cái Tiếng Anh ('a' - 'z'):
+    - `insert`: Thêm một xâu vào cây Trie bằng cách duyệt từng ký tự và tạo node mới nếu chưa tồn tại.
+    - `query`: Truy vấn kiểm tra xem tiền tố/chuỗi s có tồn tại trong Trie hay không.
+*/
+
 struct Node {
     Node *child[26];
 
@@ -17,6 +23,7 @@ struct Node {
 }; typedef Node* trie;
 trie root = new Node();
 
+// Chèn chuỗi s vào cây Trie
 void insert(trie T, string &s){
     for (char ch : s) {
         int idx = ch - 'a';
@@ -27,6 +34,7 @@ void insert(trie T, string &s){
     }
 }
 
+// Kiểm tra tiền tố s có thuộc cây Trie không
 bool query(trie T, string &s) {
     for (char ch : s) {
         int idx = ch - 'a';
@@ -46,19 +54,9 @@ inline void solve(){
     }
 }
 
-// inline void get_time_n_mem(clock_t start, clock_t end){
-//     double time_taken = double(end - start) / double(CLOCKS_PER_SEC);
-//     cerr << "\n-----------------------------------\n";
-//     cerr << "Time:   " << fixed << setprecision(6) << time_taken << " sec\n";
-//     cerr << "-----------------------------------\n";
-// }
-
 signed main(){
     nguyentukien
-    // clock_t start = clock();
     int t = 1; cin >> t;
     while (t--) solve();
-    // clock_t end = clock();
-    // get_time_n_mem(start, end);
     return 0;
 }

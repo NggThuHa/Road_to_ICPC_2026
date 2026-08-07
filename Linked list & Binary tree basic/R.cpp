@@ -5,6 +5,14 @@ using namespace std;
 #define endl '\n'
 const int MOD = 1e9 + 7;
 
+/* Ý tưởng:
+    Dựng Cây tìm kiếm nhị phân cân bằng (Balanced BST) từ mảng và duyệt Tiền thứ (Pre-order):
+    - Sắp xếp mảng tăng dần.
+    - Đệ quy chọn phần tử ở giữa `mid = (l + r) / 2` làm nút gốc.
+    - Cây con trái được tạo từ đoạn `[l, mid - 1]`, cây con phải được tạo từ đoạn `[mid + 1, r]`.
+    - Duyệt Pre-order (Gốc -> Trái -> Phải) để in kết quả.
+*/
+
 struct Node{
     int data;
     Node *left, *right;
@@ -16,6 +24,7 @@ struct Node{
         if(r >= mid + 1) right = new Node(arr, mid + 1, r);
     }
 
+    // Duyệt Pre-order (Gốc -> Trái -> Phải)
     void preOrder(){
         cout << data << ' ';
         if(left) left->preOrder();
@@ -23,8 +32,6 @@ struct Node{
     }
     
 }; typedef Node* Tree;
-
-
 
 inline void solve(){
     int n; cin >> n;

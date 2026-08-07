@@ -6,6 +6,15 @@ using namespace std;
 #define ll long long
 #define endl '\n'
 
+/* Ý tưởng:
+    Sử dụng Trie bit (Binary Trie / Bitwise Trie) để tìm phần tử nhỏ thứ k (k-th smallest element):
+    - Mới mỗi số nguyên 32-bit: Chèn từng bit từ bit 31 đến bit 0 vào Trie.
+    - Mỗi node lưu biến `count` là số lượng phần tử thuộc nhánh/cây con đó.
+    - Khi truy vấn phần tử nhỏ thứ `k`:
+      + Xét bit ở nhánh trái (`child[0]`). Nếu số lượng phần tử nhánh trái `>= k`, ta chỉ cần đi tiếp xuống nhánh trái.
+      + Ngược lại (nhánh trái có ít hơn `k` phần tử), ta phải đi xuống nhánh phải (`child[1]`), đồng thời giảm `k` đi một lượng bằng `child[0]->count` và bật bit thứ i của kết quả lên 1 (`ans |= (1 << i)`).
+*/
+
 struct Node {
     Node *child[2];
     int count; // Đếm số phần tử trong cây con của nút hiện tại
@@ -19,6 +28,7 @@ struct Node {
 }; typedef Node* trie;
 trie root = new Node();
 
+// Chèn số s dạng 32 bit vào Binary Trie
 void insert(trie T, int &s){
     ++T->count;
     for (int i = 31; i >= 0; i--) {
@@ -31,12 +41,15 @@ void insert(trie T, int &s){
     }
 }
 
+// Tìm số nhỏ thứ k trong tập hợp hiện tại
 int query(trie T, int &k) {
     int ans = 0;
     for (int i = 31; i >= 0; --i){
+        // Nếu số lượng phần tử ở nhánh bit 0 đủ chứa phần tử thứ k
         if (T->child[0] && T->child[0]->count >= k) {
             T = T->child[0];
         } else {
+            // Ngược lại, trừ đi số lượng phần tử ở nhánh bit 0 và đi sang nhánh bit 1
             if (T->child[0]) k -= T->child[0]->count;
             ans |= (1 << i);
             T = T->child[1];
@@ -56,19 +69,9 @@ inline void solve(){
     }
 }
 
-// inline void get_time_n_mem(clock_t start, clock_t end){
-//     double time_taken = double(end - start) / double(CLOCKS_PER_SEC);
-//     cerr << "\n-----------------------------------\n";
-//     cerr << "Time:   " << fixed << setprecision(6) << time_taken << " sec\n";
-//     cerr << "-----------------------------------\n";
-// }
-
 signed main(){
     nguyentukien
-    // clock_t start = clock();
     int t = 1; cin >> t;
     while (t--) solve();
-    // clock_t end = clock();
-    // get_time_n_mem(start, end);
     return 0;
 }

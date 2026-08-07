@@ -5,6 +5,12 @@ using namespace std;
 #define endl '\n'
 const int MOD = 1e9 + 7;
 
+/* Ý tưởng:
+    Dựng Cây tìm kiếm nhị phân cân bằng (Balanced BST) và duyệt Hậu thứ (Post-order):
+    - Chia đôi đoạn `[l, r]` chọn nút giữa `mid` làm gốc.
+    - Duyệt Post-order (Trái -> Phải -> Gốc).
+*/
+
 struct Node{
     int data;
     Node *left, *right;
@@ -16,6 +22,7 @@ struct Node{
         if(r >= mid + 1) right = new Node(arr, mid + 1, r);
     }
 
+    // Duyệt Post-order (Trái -> Phải -> Gốc)
     void postOrder(){
         if(left) left->postOrder();
         if(right) right->postOrder();
@@ -23,8 +30,6 @@ struct Node{
     }
     
 }; typedef Node* Tree;
-
-
 
 inline void solve(){
     int n; cin >> n;

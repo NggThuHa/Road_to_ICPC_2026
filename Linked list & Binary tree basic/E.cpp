@@ -6,6 +6,14 @@ using namespace std;
 #define ll long long
 #define endl '\n'
 
+/* Ý tưởng:
+    Biểu diễn đa thức bằng Danh sách liên kết đôi (Doubly Linked List), sắp xếp giảm dần theo số mũ:
+    - Mỗi node lưu hệ số (co) và số mũ (pw).
+    - Đọc từng xâu biểu thức đa thức, tách thành các hạng tử "co*x^pw".
+    - Tìm vị trí chèn node mới sao cho danh sách giữ thứ tự giảm dần theo số mũ.
+    - Nếu gặp node có cùng số mũ thì cộng dồn hệ số `co`.
+*/
+
 struct Node {
     int co, pw;
     Node* prev;

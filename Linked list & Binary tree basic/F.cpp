@@ -5,6 +5,12 @@ using namespace std;
 #define endl '\n'
 const int MOD = 1e9 + 7;
 
+/* Ý tưởng:
+    Dựng Cây nhị phân từ các bộ (cha, con, phía 'L'/'R'):
+    - Hàm `insertNode`: Tìm đệ quy node cha `par` trong cây, sau đó tạo node con mới `child` ở bên trái ('L') hoặc bên phải ('R').
+    - Duyệt Trung thứ (In-order Traversal): Duyệt Trái -> Gốc -> Phải để in thứ tự các nút.
+*/
+
 struct Node{
     int data;
     Node *left, *right;
@@ -14,6 +20,7 @@ struct Node{
     }
 }; typedef Node* tree;
 
+// Tìm node par đệ quy và chèn node child vào bên side ('L' hoặc 'R')
 inline void insertNode(tree root, int par, int child, char side){
     if(!root) return;
     if(root->data == par){
@@ -25,6 +32,7 @@ inline void insertNode(tree root, int par, int child, char side){
     if(root->right) insertNode(root->right, par, child, side);
 }
 
+// Duyệt cây theo thứ tự In-order (Trái -> Gốc -> Phải)
 inline void inOrder(tree root){
     if(!root) return;
     if(root->left) inOrder(root->left);

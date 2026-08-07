@@ -5,6 +5,12 @@ using namespace std;
 #define endl '\n'
 const int MOD = 1e9 + 7;
 
+/* Ý tưởng:
+    Đếm số lượng nút không phải nút lá (Nút nội bộ / Internal Nodes):
+    - Đếm tổng số nút lá `cnt` bằng cách đệ quy kiểm tra `left == NULL && right == NULL`.
+    - Số lượng nút nội bộ = Tổng số nút (n) - Số nút lá (cnt).
+*/
+
 int cnt = 0;
 struct Node{
     int data;
@@ -25,6 +31,7 @@ struct Node{
         }
     }
 
+    // Đếm số lượng nút lá
     void checkLeaf(){
         if (left == NULL && right == NULL){
             ++cnt;
@@ -34,8 +41,6 @@ struct Node{
         if (right) right->checkLeaf();
     }
 }; typedef Node* Tree;
-
-
 
 inline void solve(){
     int n; cin >> n;
@@ -49,6 +54,7 @@ inline void solve(){
         else root->insert(x);
     }
     root->checkLeaf();
+    // Kết quả là tổng số nút trừ số nút lá
     cout << n - cnt << endl;
 }
 

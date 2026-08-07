@@ -5,6 +5,12 @@ using namespace std;
 #define endl '\n'
 const int MOD = 1e9 + 7;
 
+/* Ý tưởng:
+    Cây tìm kiếm nhị phân (BST):
+    - Chèn lần lượt các phần tử vào cây BST.
+    - Duyệt Tiền thứ (Pre-order Traversal): Gốc -> Trái -> Phải.
+*/
+
 struct Node{
     int data;
     Node *left, *right;
@@ -13,6 +19,7 @@ struct Node{
         left = right = NULL;
     }
     
+    // Thao tác chèn vào cây BST
     void insert(int val){
         if(val < data){
             if(!left) left = new Node(val);
@@ -24,6 +31,7 @@ struct Node{
         }
     }
 
+    // Duyệt Pre-order (Gốc -> Trái -> Phải)
     void printPreOrder(){
         cout << data << " ";
         if(left) left->printPreOrder();

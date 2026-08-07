@@ -6,8 +6,16 @@ using namespace std;
 #define ll long long
 #define endl '\n'
 
+/* Ý tưởng:
+    Đếm số lượng xâu con phân biệt có độ dài k trong xâu s (Count Distinct Substrings of Length K):
+    - Sử dụng Rolling Hash để tính giá trị Hash của từng xâu con độ dài k: `getHash(i, i + k - 1)`.
+    - Thêm mã Hash của tất cả xâu con vào `unordered_set<ll> mark`.
+    - Kích thước của `mark` (`mark.size()`) chính là số xâu con phân biệt độ dài k.
+*/
+
 ll hashS[1000006], power[1000006], mod = 2e9 + 11, base = 29;
 
+// Lấy mã Hash của đoạn s[l..r]
 inline ll getHash(int l, int r){
     return (hashS[r] - hashS[l - 1] * power[r - l + 1] + 1ll * mod * mod) % mod;
 }
@@ -16,31 +24,25 @@ inline void solve(){
     unordered_set<ll> mark;    
     int n, k; cin >> n >> k;
     string s; cin >> s;
+    
+    // Tiền xử lý Hash cho xâu s
     power[0] = 1;
     for (int i = 1; i <= n; i++) {
         power[i] = (power[i - 1] * base) % mod;
         hashS[i] = (hashS[i - 1] * base + (s[i - 1] - 'a' + 1)) % mod;
     }
-    for (int i = 1; i <= n - k + 1; i++) {
+    
+    // Đẩy Hash của mọi cửa sổ độ dài k vào unordered_set
+    for (int i = 1; i + k - 1 <= n; i++) {
         ll h = getHash(i, i + k - 1);
         mark.insert(h);
     }
     cout << mark.size() << endl;
 }
 
-// inline void get_time_n_mem(clock_t start, clock_t end){
-//     double time_taken = double(end - start) / double(CLOCKS_PER_SEC);
-//     cerr << "\n-----------------------------------\n";
-//     cerr << "Time:   " << fixed << setprecision(6) << time_taken << " sec\n";
-//     cerr << "-----------------------------------\n";
-// }
-
 signed main(){
     nguyentukien
-    // clock_t start = clock();
     int t = 1; cin >> t;
     while (t--) solve();
-    // clock_t end = clock();
-    // get_time_n_mem(start, end);
     return 0;
 }

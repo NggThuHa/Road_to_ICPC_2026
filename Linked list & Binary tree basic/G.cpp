@@ -5,6 +5,11 @@ using namespace std;
 #define endl '\n'
 const int MOD = 1e9 + 7;
 
+/* Ý tưởng:
+    - Sử dụng `unordered_map<int, tree>` để lưu vị trí con trỏ của mỗi node theo giá trị của nó, giúp truy cập $O(1)$ khi nối cha-con mà không cần tìm kiếm đệ quy.
+    - Duyệt cây theo mức (Level-order Traversal) bằng Hàng đợi (Queue / BFS).
+*/
+
 struct Node{
     int data;
     Node *left, *right;
@@ -15,6 +20,7 @@ struct Node{
 }; typedef Node* tree;
 unordered_map <int, tree> mp;
 
+// Duyệt cây theo mức (Level-order / BFS)
 inline void inOrder(tree root){
     queue <tree> q;
     q.push(root);
@@ -29,6 +35,7 @@ inline void inOrder(tree root){
 inline void solve(){
     int n; cin >> n;
     tree root = NULL;
+    mp.clear();
     for (int i = 0; i < n; i++) {
         int par, child;
         char side;

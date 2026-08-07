@@ -5,6 +5,13 @@ using namespace std;
 #define endl '\n'
 const int MOD = 1e9 + 7;
 
+/* Ý tưởng:
+    Sử dụng Danh sách liên kết đơn (Singly Linked List).
+    - Thao tác 1: Thêm phần tử vào cuối danh sách.
+    - Thao tác 2: Thêm phần tử vào đầu danh sách (cập nhật lại root).
+    - Thao tác 3: Duyệt danh sách từ root đến cuối và in tất cả các giá trị.
+*/
+
 struct Node{
     int data;
     Node *next;
@@ -24,20 +31,25 @@ inline void solve(){
             cin >> x;
             tmp = new Node(x);
         }
+        // Thao tác 1: Thêm vào cuối danh sách
         if(c == 1){
             if(!root) root = tmp;
             else {
                 Node *cur = root;
-                while(cur->next) cur = cur->next;
+                while(cur->next) cur = cur->next; // Duyệt đến node cuối cùng
                 cur->next = tmp;
             }
-        } else if(c == 2){
+        } 
+        // Thao tác 2: Thêm vào đầu danh sách
+        else if(c == 2){
             if(!root) root = tmp;
             else {
                 tmp->next = root;
-                root = tmp;
+                root = tmp; // Đặt node mới làm root
             }
-        } else {
+        } 
+        // Thao tác 3: In danh sách liên kết
+        else {
             Node* cur = root;
             if(cur) {
                 while(cur->next){
@@ -46,7 +58,6 @@ inline void solve(){
                 }
                 cout << cur->data << endl;
             }
-            
         }
     }
 }

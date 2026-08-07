@@ -5,6 +5,14 @@ using namespace std;
 #define endl '\n'
 const int MOD = 1e9 + 7;
 
+/* Ý tưởng:
+    Sử dụng Danh sách liên kết đôi (Doubly Linked List): Mỗi node duy trì 2 con trỏ `prev` và `next`.
+    - 1 x: Thêm phần tử x vào cuối.
+    - 2 x: Thêm phần tử x vào đầu.
+    - 3 x: Xóa phần tử đầu tiên xuất hiện có giá trị x.
+    - 4: In toàn bộ danh sách.
+*/
+
 struct Node{
     int data;
     Node *prev;
@@ -27,6 +35,7 @@ inline void solve(){
             cin >> x;
             tmp = new Node(x);
         }
+        // Thao tác 1: Thêm vào cuối danh sách liên kết đôi
         if(c == 1){
             if(!root) root = tmp;
             else {
@@ -35,22 +44,30 @@ inline void solve(){
                 cur->next = tmp;
                 tmp->prev = cur;
             }
-        } else if(c == 2){
+        } 
+        // Thao tác 2: Thêm vào đầu danh sách liên kết đôi
+        else if(c == 2){
             if(!root) root = tmp;
             else {
                 tmp->next = root;
                 root->prev = tmp;
                 root = tmp;
             }
-        } else if(c == 3){
+        } 
+        // Thao tác 3: Tìm và xóa phần tử đầu tiên có giá trị x
+        else if(c == 3){
             if(!root) continue;
             node cur = root;
             do {
+                // Nếu node cần xóa là node đầu tiên (root)
                 if(root->data == x){
+                    node toDelete = root;
                     if(root->next) root->next->prev = NULL;
                     root = root->next;
+                    delete toDelete;
                     break;
                 }
+                // Nếu node cần xóa nằm ở giữa hoặc cuối
                 if(cur->data == x){
                     if(cur->prev) cur->prev->next = cur->next;
                     if(cur->next) cur->next->prev = cur->prev;
@@ -60,7 +77,9 @@ inline void solve(){
                 cur = cur->next;
             }
             while(cur);
-        } else {
+        } 
+        // Thao tác 4: In danh sách
+        else {
             if(!root) continue;
             node cur = root;
             while(cur->next) {

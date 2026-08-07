@@ -5,6 +5,13 @@ using namespace std;
 #define endl '\n'
 const int MOD = 1e9 + 7;
 
+/* Ý tưởng:
+    Kiểm tra cây nhị phân thỏa mãn:
+    1. Tất cả các nút lá nằm ở cùng một độ sâu (level).
+    2. Tổng số lượng nút lá là một số chẵn.
+    Sử dụng BFS để thống kê tần suất các mức của nút lá qua `unordered_map<int, int> leafs`.
+*/
+
 struct Node{
     int data;
     int level;
@@ -19,16 +26,16 @@ unordered_map <int, tree> mp;
 
 inline int LevelOrder(tree root){
     if (!root) return 0;
-    int leaf = 0;
     unordered_map<int, int> leafs;
     queue <tree> q;
     q.push(root);
     while(q.size()){
         tree cur = q.front(); q.pop();
-        if(!cur->left && !cur->right) ++leafs[cur->level];
+        if(!cur->left && !cur->right) ++leafs[cur->level]; // Đếm số nút lá ở từng level
         if(cur->right) q.push(cur->right);
         if(cur->left) q.push(cur->left);
     }
+    // Thỏa mãn nếu chỉ có 1 mức duy nhất và số nút lá là số chẵn (% 2 == 0)
     if(leafs.size() == 1 and leafs.begin()->second % 2 == 0) return 1;
     else return 0;
 }
@@ -36,6 +43,7 @@ inline int LevelOrder(tree root){
 inline void solve(){
     int n; cin >> n;
     tree root = NULL;
+    mp.clear();
     for (int i = 0; i < n; i++) {
         int par, child;
         char side;

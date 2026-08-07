@@ -5,6 +5,12 @@ using namespace std;
 #define endl '\n'
 const int MOD = 1e9 + 7;
 
+/* Ý tưởng:
+    Đếm số lượng nút lá trên Cây tìm kiếm nhị phân cân bằng (Balanced BST):
+    - Dựng cây từ mảng đã sắp xếp.
+    - Đệ quy đếm số nút lá (`!left && !right`) tăng biến `cnt`.
+*/
+
 int cnt = 0;
 struct Node{
     int data;
@@ -17,6 +23,7 @@ struct Node{
         if(r >= mid + 1) right = new Node(arr, mid + 1, r);
     }
 
+    // Đếm số lượng nút lá
     void checkLeaf(){
         if(!left and !right) ++cnt;
         if(left) left->checkLeaf();
@@ -24,8 +31,6 @@ struct Node{
     }
     
 }; typedef Node* Tree;
-
-
 
 inline void solve(){
     int n; cin >> n;

@@ -5,6 +5,12 @@ using namespace std;
 #define endl '\n'
 const int MOD = 1e9 + 7;
 
+/* Ý tưởng:
+    Cây tìm kiếm nhị phân (Binary Search Tree - BST):
+    - Chèn phần tử: Nếu `val <= data` chèn vào cây con trái, ngược lại chèn vào cây con phải.
+    - Duyệt Hậu thứ (Post-order Traversal): Trái -> Phải -> Gốc.
+*/
+
 struct Node{
     int data;
     Node *left, *right;
@@ -13,6 +19,7 @@ struct Node{
         left = right = NULL;
     }
     
+    // Thao tác chèn phần tử vào cây BST
     void insert(int val){
         if(val <= data){
             if(!left) left = new Node(val);
@@ -24,6 +31,7 @@ struct Node{
         }
     }
 
+    // Duyệt Post-order (Trái -> Phải -> Gốc)
     void printPostOrder(){
         if(left) left->printPostOrder();
         if(right) right->printPostOrder();

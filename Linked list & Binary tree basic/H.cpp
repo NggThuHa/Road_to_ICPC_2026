@@ -5,6 +5,12 @@ using namespace std;
 #define endl '\n'
 const int MOD = 1e9 + 7;
 
+/* Ý tưởng:
+    Duyệt cây theo mức từ dưới lên (Reverse Level-order Traversal):
+    - Dùng BFS với Queue đẩy các nút vào `vector <int> ans` (lưu ý ưu tiên đẩy con Phải trước rồi đến con Trái).
+    - Sau khi BFS xong, đảo ngược vector `ans` để thu được thứ tự các nút từ dưới lên trên, từ trái sang phải.
+*/
+
 struct Node{
     int data;
     Node *left, *right;
@@ -25,6 +31,7 @@ inline void LevelOrder(tree root){
         if(cur->right) q.push(cur->right);
         if(cur->left) q.push(cur->left);
     }
+    // Đảo ngược thứ tự để có kết quả từ lá lên gốc
     reverse(ans.begin(), ans.end());
     for (int it : ans) cout << it << " ";
 }
@@ -32,6 +39,7 @@ inline void LevelOrder(tree root){
 inline void solve(){
     int n; cin >> n;
     tree root = NULL;
+    mp.clear();
     for (int i = 0; i < n; i++) {
         int par, child;
         char side;

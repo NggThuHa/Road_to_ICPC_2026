@@ -6,6 +6,13 @@ using namespace std;
 #define ll long long
 #define endl '\n'
 
+/* Ý tưởng:
+    Tìm cặp số có giá trị XOR lớn nhất (Maximum XOR Pair):
+    - Sử dụng Binary Trie lưu biểu diễn nhị phân 32-bit của các số đã duyệt qua.
+    - Để XOR thu được kết quả lớn nhất tại bit thứ i: Nếu bit hiện tại của s là `idx` (0 hoặc 1), ta tham lam ưu tiên đi sang nhánh bit đối lập `1 - idx` (để bit XOR tương ứng bằng 1, làm giá trị XOR tăng thêm $2^i$).
+    - Nếu có nhánh `1 - idx`, bật bit thứ i trong kết quả `ans |= (1 << i)` và đi theo nhánh `1 - idx`. Nếu không có, đành phải đi theo nhánh `idx`.
+*/
+
 struct Node {
     Node *child[2];
 
@@ -17,6 +24,7 @@ struct Node {
 }; typedef Node* trie;
 trie root = new Node();
 
+// Chèn số s dạng 32 bit vào Binary Trie
 void insert(trie T, int &s){
     for (int i = 31; i >= 0; i--) {
         int idx = (s >> i) & 1;
@@ -27,10 +35,12 @@ void insert(trie T, int &s){
     }
 }
 
+// Tìm giá trị XOR lớn nhất khi XOR một số s đã có trong Trie với số s hiện tại
 int getMaxXor(trie T, int &s) {
     int ans = 0;
     for (int i = 31; i >= 0; --i){
         int idx = (s >> i) & 1;
+        // Ưu tiên tham lam chọn bit đối lập để thu được kết quả bit XOR là 1
         if (T->child[1 - idx]) {
             ans |= (1 << i);
             T = T->child[1 - idx];
@@ -53,19 +63,9 @@ inline void solve(){
     cout << maxXor << endl;
 }
 
-// inline void get_time_n_mem(clock_t start, clock_t end){
-//     double time_taken = double(end - start) / double(CLOCKS_PER_SEC);
-//     cerr << "\n-----------------------------------\n";
-//     cerr << "Time:   " << fixed << setprecision(6) << time_taken << " sec\n";
-//     cerr << "-----------------------------------\n";
-// }
-
 signed main(){
     nguyentukien
-    // clock_t start = clock();
     int t = 1; // cin >> t;
     while (t--) solve();
-    // clock_t end = clock();
-    // get_time_n_mem(start, end);
     return 0;
 }

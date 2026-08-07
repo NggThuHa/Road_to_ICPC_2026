@@ -5,6 +5,12 @@ using namespace std;
 #define endl '\n'
 const int MOD = 1e9 + 7;
 
+/* Ý tưởng:
+    Đếm số nút phi lá trong BST (Nút trung gian):
+    - Đếm số lượng nút lá `cnt`.
+    - Kết quả là `n - cnt`.
+*/
+
 int cnt = 0;
 struct Node{
     int data;
@@ -34,8 +40,6 @@ struct Node{
         if (right) right->checkLeaf();
     }
 }; typedef Node* Tree;
-
-
 
 inline void solve(){
     int n; cin >> n;

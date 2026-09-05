@@ -14,6 +14,23 @@ Với i = 0, table[0][u] = a[u] với mọi u từ 1 đến n.
 
 Bước 3: Công thức truy hồi
 Với i > 0, table[i][u] = max(table[i - 1][u], table[i - 1][u + (1 << (i - 1))]) với mọi u từ 1 đến n - (1 << i) + 1.
+
+Bước 4: Trả lời truy vấn
+Chuẩn hóa để u <= v. Với u = v hoặc hai vị trí kề nhau,
+đoạn ở giữa là rỗng nên xử lý trực tiếp. Các trường hợp còn lại
+cần kiểm tra max(a[u + 1 .. v - 1]) <= a[u].
+
+Bước 5: Tính đúng đắn
+Hàm query trả về đúng giá trị lớn nhất trên đoạn ở giữa nhờ hai block
+có độ dài lũy thừa của 2. Vì vậy phép so sánh với a[u] tương đương
+chính xác với điều kiện của truy vấn.
+
+Bước 6: Độ phức tạp
+Tiền xử lý mất O(n log n), mỗi truy vấn mất O(1), bộ nhớ O(n log n).
+
+Bước 7: Trường hợp biên
+Không được gọi query trên đoạn rỗng; u = v và v = u + 1 phải được
+xử lý riêng. Khi xây bảng, chỉ tạo block thỏa mãn u + 2^i - 1 <= n.
 */
 
 ll table[21][50004];
@@ -21,7 +38,7 @@ ll table[21][50004];
 inline void build(ll a[], int n){
     for (int u = 1; u <= n; ++u) table[0][u] = a[u];
     for (int i = 1; i <= 20; ++i){
-        for (int u = 1; u + (1 << (i - 1)) - 1 <= n; ++u){
+        for (int u = 1; u + (1 << i) - 1 <= n; ++u){
             table[i][u] = max(table[i - 1][u], table[i - 1][u + (1 << (i - 1))]);
         }
     }   
@@ -41,9 +58,10 @@ inline void solve(){
     while(k--){
         int u, v; cin >> u >> v;
         if(u > v) swap(u, v);
-        if(u == v) ++cnt;
-        if(u == v - 1) ++cnt;
-        else if(query(u + 1, v - 1) <= a[u]) {
+        if (u == v || u == v - 1) {
+            ++cnt;
+        }
+        else if (query(u + 1, v - 1) <= a[u]) {
             ++cnt;
         }
     }

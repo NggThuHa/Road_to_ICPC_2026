@@ -5,9 +5,34 @@ using namespace std;
 #define endl '\n'
 const int MOD = 1e9 + 7;
 
-/* Ý tưởng:
-    - Sử dụng `unordered_map<int, tree>` để lưu vị trí con trỏ của mỗi node theo giá trị của nó, giúp truy cập $O(1)$ khi nối cha-con mà không cần tìm kiếm đệ quy.
-    - Duyệt cây theo mức (Level-order Traversal) bằng Hàng đợi (Queue / BFS).
+/*
+Bước 1: Biểu diễn dữ liệu
+Mỗi Node lưu giá trị và hai con trỏ left, right. Dùng unordered_map để
+ánh xạ giá trị node tới con trỏ tương ứng, giúp nối cha-con trong O(1).
+
+Bước 2: Khởi tạo
+Ở mỗi test, xóa map cũ. Node cha của quan hệ đầu tiên được dùng làm root,
+sau đó tạo node con và lưu các node vào map.
+
+Bước 3: Xây dựng cây
+Với mỗi quan hệ (par, child, side), gắn child vào left hoặc right của par
+tùy theo side là 'L' hay 'R'.
+
+Bước 4: Duyệt cây
+Dùng queue cho BFS. Đưa root vào queue; mỗi lần lấy một node ra thì in nó,
+sau đó lần lượt đưa các node con trái và phải vào queue.
+
+Bước 5: Tính đúng đắn
+Queue luôn chứa các node theo thứ tự không giảm về độ sâu. Vì vậy mỗi node
+được in trước các node ở tầng sâu hơn, và trong cùng một node thì con trái
+được xử lý trước con phải: đó là thứ tự duyệt theo mức.
+
+Bước 6: Độ phức tạp
+Xây cây và duyệt cây đều O(n) với n quan hệ; bộ nhớ O(n).
+
+Bước 7: Trường hợp biên
+Input cần mô tả một cây hợp lệ và node cha cần tồn tại trong map trước khi
+được nối. Nếu cây rỗng thì không được đưa root null vào queue.
 */
 
 struct Node{

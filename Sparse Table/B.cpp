@@ -17,6 +17,23 @@ Nếu nút u là nút gốc thì root[0][u] = -1.
 Bước 3: Công thức truy hồi
 Nút cha của nút u sau 2^i bước đi lên cây có thể được tính bằng cách lấy nút cha của nút cha của nút u sau 2^(i - 1) bước đi lên cây:
 root[i][u] = root[i - 1][root[i - 1][u]] với mọi i từ 1 đến log2(n) và mọi u từ 1 đến n.
+
+Bước 4: Trả lời truy vấn
+Phân tích k theo biểu diễn nhị phân. Với mỗi bit i bật trong k,
+nhảy u lên root[i][u], tức là đi lên 2^i mức. Các bước nhảy được
+thực hiện từ bit nhỏ đến bit lớn và dừng nếu đã đi qua nút gốc.
+
+Bước 5: Tính đúng đắn
+Theo định nghĩa, root[i][u] là tổ tiên cách u đúng 2^i bước.
+Tổng các bước nhảy ứng với các bit bật bằng k, nên nút cuối cùng
+chính là tổ tiên thứ k của u.
+
+Bước 6: Độ phức tạp
+Tiền xử lý mất O(n log n), mỗi truy vấn mất O(log n), bộ nhớ O(n log n).
+
+Bước 7: Trường hợp biên
+Nút gốc có tổ tiên là -1. Nếu đang ở -1 trước khi hoàn thành k bước,
+kết quả là -1. Số mức của bảng phải đủ để biểu diễn k lớn nhất.
 */
 
 int root[21][100005];

@@ -1,0 +1,56 @@
+#include <bits/stdc++.h>
+using namespace std;
+#define nguyentukien ios_base::sync_with_stdio(0); cin.tie(0); cout.tie(0); 
+#define ll long long
+#define endl '\n'
+const int MOD = 1e9 + 7;
+
+/*
+Bước 1: Định nghĩa trạng thái
+Gọi table[i][u] là giá trị lớn nhất trong đoạn từ u đến u + 2^i - 1.
+
+Bước 2: Bài toán cơ sở
+Với i = 0, table[0][u] = a[u] với mọi u từ 1 đến n.
+
+Bước 3: Công thức truy hồi
+Với i > 0, table[i][u] = max(table[i - 1][u], table[i - 1][u + (1 << (i - 1))]) với mọi u từ 1 đến n - (1 << i) + 1.
+*/
+
+ll table[21][50004];
+
+inline void build(ll a[], int n){
+    for (int u = 1; u <= n; ++u) table[0][u] = a[u];
+    for (int i = 1; i <= 20; ++i){
+        for (int u = 1; u + (1 << (i - 1)) - 1 <= n; ++u){
+            table[i][u] = max(table[i - 1][u], table[i - 1][u + (1 << (i - 1))]);
+        }
+    }   
+}
+
+inline ll query(int l, int r){
+    int len = log2(r - l + 1);
+    return max(table[len][l], table[len][r - (1 << len) + 1]);
+}
+
+
+inline void solve(){
+    int n, k, cnt = 0; cin >> n >> k;
+    ll a[n + 1];
+    for (int i = 1; i <= n; ++i) cin >> a[i];
+    build(a, n);
+    while(k--){
+        int u, v; cin >> u >> v;
+        if(u > v) swap(u, v);
+        if(u == v) ++cnt;
+        if(u == v - 1) ++cnt;
+        else if(query(u + 1, v - 1) <= a[u]) {
+            ++cnt;
+        }
+    }
+    cout << cnt;
+}
+
+signed main(){
+    nguyentukien
+    solve();
+}
